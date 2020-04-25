@@ -27,7 +27,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # hadoop
-RUN curl -s http://www.eu.apache.org/dist/hadoop/common/hadoop-2.9.2/hadoop-2.9.2.tar.gz | tar -xz -C /usr/local/
+RUN curl -s https://downloads.apache.org/hadoop/common/hadoop-2.9.2/hadoop-2.9.2.tar.gz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s ./hadoop-2.9.2 hadoop
 
 ENV HADOOP_PREFIX /usr/local/hadoop
@@ -87,8 +87,8 @@ RUN ln -s $PIG_HOME /usr/local/pig
 ENV PATH $PATH:$PIG_HOME/bin
 
 # hive
-RUN curl -s http://apache.mirror.anlx.net/hive/hive-2.3.5/apache-hive-2.3.5-bin.tar.gz  | tar -xz -C /usr/local
-ENV HIVE_HOME /usr/local/apache-hive-2.3.5-bin/
+RUN curl -s https://downloads.apache.org/hive/hive-2.3.7/apache-hive-2.3.7-bin.tar.gz | tar -xz -C /usr/local
+ENV HIVE_HOME /usr/local/apache-hive-2.3.7-bin/
 RUN ln -s $HIVE_HOME /usr/local/hive
 ENV PATH $PATH:$HIVE_HOME/bin
 
@@ -114,15 +114,16 @@ RUN apt-get install -y python-pip \
     && pip install mrjob
 
 # spark
-RUN curl -s https://www-eu.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-without-hadoop-scala-2.12.tgz | tar -xz -C /usr/local
-ENV SPARK_HOME /usr/local/spark-2.4.3-bin-without-hadoop-scala-2.12/
+RUN curl -s https://downloads.apache.org/spark/spark-2.3.4/spark-2.3.4-bin-without-hadoop.tgz | tar -xz -C /usr/local
+ENV SPARK_HOME /usr/local/spark-2.3.4-bin-without-hadoop/
 RUN ln -s $SPARK_HOME /usr/local/spark
 ENV PATH $PATH:$SPARK_HOME/bin
 ADD spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 ADD bootstrap.sh /etc/bootstrap.sh
 RUN chown root:root /etc/bootstrap.sh
-RUN chmod 700 /etc/bootstrap.sh
+RUN ["chmod", "+x", "/etc/bootstrap.sh"]
+
 
 ENV BOOTSTRAP /etc/bootstrap.sh
 
